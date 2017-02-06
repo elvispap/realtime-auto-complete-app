@@ -1,0 +1,37 @@
+#header{
+    position: relative;
+    margin-bottom: 70px;
+}
+
+#footer {
+    margin-top: 130px;
+    padding: 10px;
+}
+
+.space-left {
+    margin-left: 4px;
+}
+
+.link:hover {
+    cursor: pointer;
+}
+
+
+.dropdown-list{
+    position: absolute;
+    width: 100%;
+    z-index: 2;
+    cursor: pointer;
+    background: white;
+    border: 1px solid grey;
+}
+.dropdown-list-item {
+    float: left;
+    width: 100%;
+    padding: 0 10px;
+    font-size: 14px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border: solid 1px #dddddd;
+    border-top: none;
+}

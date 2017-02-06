@@ -1,0 +1,40 @@
+<html ng-app="app">
+
+<head>
+    <title> payment-app </title>
+
+    <!----- JS ------>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"> </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-route.min.js"> </script>
+
+    <!-- <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script> -->
+    <script src="app.lib.js"></script>
+    <script src="app.js"></script>
+
+    <!----- CSS ------>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="bower_components/angular-motion/dist/angular-motion.min.css"/>
+    <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.min.css"/>
+
+    <link rel="stylesheet" href="styles/style.min.css"/>
+</head>
+
+<body>
+
+<div ng-controller="MainController">
+
+    <!----- Header ------>
+    <my-header></my-header>
+
+    <!------- Main content ------>
+    <div class="container">
+        <div ui-view></div>
+    </div>
+
+    <!----- Footer ------>
+    <my-footer></my-footer>
+
+</div>
+</body>
+</html>

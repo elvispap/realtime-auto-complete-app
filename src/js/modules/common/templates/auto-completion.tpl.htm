@@ -1,0 +1,22 @@
+<div class="">
+
+    ...ITEMS: {{items | json}}
+
+    <input ng-change="query($query)"
+           ng-model="$query"
+           ng-keydown="onKeyDown($event)"
+           placeholder="{{placeholder}}"
+           class="form-control"
+           type="text"
+           name=""
+           value="">
+    <div class="dropdown-list" ng-if="items.length">
+        <div ng-click="selectItem(item)"
+             class="dropdown-list-item"
+             ng-repeat="item in items">
+            <span>
+                {{item}}
+            </span>
+        </div>
+    </div>
+</div>

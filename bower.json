@@ -1,0 +1,38 @@
+{
+  "name": "payment-app",
+  "version": "0.0.1",
+  "description": "A payment app",
+  "main": "dist/index.html",
+  "authors": [
+    "elvis.papa89@gmail.com"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.4",
+    "angular-motion": "~0.4.2",
+    "angular-sanitize": "~1.4.5",
+    "angular-strap": "~2.3.1",
+    "angular-translate": "~2.8.1",
+    "angular-utils-pagination": "~0.8.4",
+    "bootstrap": "~3.3.7",
+    "fontawesome": "~4.5.0",
+    "jquery": "~2.1.4",
+    "lodash": "~3.10.1",
+    "restangular": "~1.5.1",
+    "moment": "~2.11.1",
+    "angular-animate": "~1.4.8",
+    "angular-ui-router": "^0.3.1",
+    "angular-moment": "^1.0.0"
+  },
+  "resolutions": {
+    "angular": "~1.5.x"
+  }
+}
