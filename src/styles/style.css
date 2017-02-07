@@ -35,3 +35,9 @@
     border: solid 1px #dddddd;
     border-top: none;
 }
+.active {
+    color: red;
+}
+.inactive {
+    
+}

@@ -98,16 +98,18 @@
 
                 const DOWN = 40;
                 const UP = 38;
+                const ENTER = 13;
 
                 var init = function() {
                     items = [
                         {id: 1, value: "groovy"},
                         {id: 2, value: "java"},
-                        {id: 2, value: "java 2"},
-                        {id: 2, value: "java 3"},
-                        {id: 2, value: "java 4"},
-                        {id: 3, value: "python"}
+                        {id: 3, value: "java 2"},
+                        {id: 4, value: "java 3"},
+                        {id: 5, value: "java 4"},
+                        {id: 6, value: "python"}
                     ];
+                    $scope.currentItemFromIndex;
                     $scope.keyUpDownValue = -1;
                     $scope.items = [];
                     $scope.placeholder = $scope.placeholder || "Choose..";
@@ -133,14 +135,22 @@
                     $scope.items = [];
                 };
 
-                RegExp.escape = function (s) {
-                    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+                var clearIndexData = function() {
+                     // restore default values
+                    $scope.keyUpDownValue = -1;
+                    $scope.currentItemFromIndex = null;
+                };
+
+                RegExp.escape = function (string) {
+                    return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
                 };
 
                 $scope.query = function(q) {
                     console.log("query for", q);
+
                     if(q === "") {
                         clearItems();
+                        clearIndexData();
                         return;
                     }
 
@@ -149,53 +159,64 @@
 
                         var testableRegExp = new RegExp(RegExp.escape(q), "i");
                         if (itemValue.match(testableRegExp) && !itemExistInItems(itemValue, $scope.items)) {
-                            console.log("adding itemValue", itemValue);
                             addItem(itemValue);
                         }
                     });
-
                 };
 
-                $scope.onKeyDown = function($event) {
+                $scope.onKeyPressed = function($event) {
 
                     var key = $event.keyCode;
 
-                    // Disable event when are no items to select
+                    // Case 1. Disable event when are no items to select
                     if(!$scope.items.length) {
-                        $scope.keyUpDownValue = -1;     // restore default value
+                        clearIndexData();
                         return;
                     }
 
-                    // When pointer has reach the last item, disable the event (there are no more items to select)
+                    // Case 2. when pointer has reach the last item, disable the event (there are no more items to select)
                     if(key === DOWN && $scope.keyUpDownValue === $scope.items.length - 1) {
                         return;
                     }
 
-                    // When pointer has reach the first item, disable the event (there are no more items to select)
+                    // Case 3. When pointer has reach the first item, disable the event (there are no more items to select)
                     if(key === UP && $scope.keyUpDownValue === 0) {
                         return;
                     }
 
-                    //if(key === UP )
-
-                    //console.log("got key", key);
+                    // Case 4. There are still items to select
                     if(key === DOWN) {    // down
                         $scope.keyUpDownValue++;
                     }
                     else if(key === UP) {   // up
                         $scope.keyUpDownValue--;
                     }
-                    console.debug("return item in position", $scope.keyUpDownValue);
-                };
 
-                $scope.onKeyUp = function($event) {
-                    //$scope.keyUpDownValue--;
-                    console.log("onKeyUp", $scope.keyUpDownValue);
+                    // Case 5. Enter key was pressed to select current item
+
+                    if(key === ENTER && $scope.currentItemFromIndex) {
+                        $scope.selectItem($scope.currentItemFromIndex);
+                    }
+
+
+                    // Finally, set current active item
+                    if($scope.keyUpDownValue !== -1) {
+                        var itemFromIndex = $scope.items[$scope.keyUpDownValue];
+                        $scope.currentItemFromIndex = itemFromIndex;
+                    }
+
                 };
 
                 $scope.selectItem = function(item) {
                     $scope.$query = item;
                     clearItems();
+                };
+
+                $scope.getListItemClass = function(index){
+                    if(typeof $scope.currentItemFromIndex !== undefined && $scope.items[index] === $scope.currentItemFromIndex) {
+                        return 'active';
+                    }
+                    return 'inactive';
                 };
 
                 init();

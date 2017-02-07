@@ -4,15 +4,16 @@
 
     <input ng-change="query($query)"
            ng-model="$query"
-           ng-keydown="onKeyDown($event)"
+           ng-keydown="onKeyPressed($event)"
            placeholder="{{placeholder}}"
            class="form-control"
            type="text"
            name=""
            value="">
-    <div class="dropdown-list" ng-if="items.length">
+        <div class="dropdown-list" ng-if="items.length">
         <div ng-click="selectItem(item)"
              class="dropdown-list-item"
+             ng-class="getListItemClass($index)"}
              ng-repeat="item in items">
             <span>
                 {{item}}
