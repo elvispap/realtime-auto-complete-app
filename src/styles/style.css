@@ -16,14 +16,18 @@
     cursor: pointer;
 }
 
+.dropdown-list-container {
+    border: 1px solid red;
+    max-width: 550px;
+}
 
 .dropdown-list{
-    position: absolute;
+    position: inherit;
     width: 100%;
     z-index: 2;
-    cursor: pointer;
-    background: white;
-    border: 1px solid grey;
+    display: inline-block;
+    background: #fff;
+    border: 2px solid blue;
 }
 .dropdown-list-item {
     float: left;
@@ -39,5 +43,5 @@
     color: red;
 }
 .inactive {
-    
+
 }

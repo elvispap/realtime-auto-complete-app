@@ -102,6 +102,7 @@ module.exports = function(grunt) {
                     'src/js/modules/common/common.js',
                     'src/js/modules/common/api.js',
                     'src/js/modules/common/routing.js',
+                    'src/js/modules/common/services/*.js',
                     'src/js/modules/common/directives.js',
                     'src/js/modules/common/filters/*.js',
                     'src/js/modules/common/controllers.js'
