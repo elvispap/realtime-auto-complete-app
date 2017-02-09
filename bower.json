@@ -1,7 +1,7 @@
 {
   "name": "autoCompletion-app",
   "version": "0.0.1",
-  "description": "A search autoCompletion app",
+  "description": "A real time search auto-completion application",
   "main": "dist/index.html",
   "authors": [
     "elvis.papa89@gmail.com"
