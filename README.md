@@ -1,34 +1,31 @@
 # Description
 
-```
-A simple application for making payment transactions among accounts in AngularJS.
+A real time input auto-completion application written in AngularJS.
 
-```
+###### Currently supported APIs:
+- Search for books using the Google Books API
+- Search for locations using the Google Maps API
+
 
 # Running the application
 
-```
-1. Run the backend Grails appplication: grails run-app
-2. Once the Grails app is running go inside the /dist directory and run an http server. 
-    
-    For example using the npm http server: http-server -p ${port}
-    
-    * For the frontend app, run your http-server in a port different from 8080 since 
-    is the default port used by Grails to serve the backend.
-```
+ - cd dist; http-server -p ${port}      // default port is 8080
+ - Login credentials: username: 'test' and password: 'test'
+
 
 # Development
+##### install dependencies
 
-```
-# install dependencies
+ - npm install
+ - bower install
 
-1. npm install
-2. bower install
+##### run the application
 
-# run the application
-1. grunt; grunt watch
-2. go inside /dist and run an http server. 
-     For example using the npm http server: http-server -p ${port}
+- grunt; grunt watch
+- cd /dist; http-server -p ${port} // default port is 8080
+- To have the page auto refresh task from grunt please install the following extension on Chrome:    https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?utm_source=chrome-app-launcher-info-dialog
+- For Cross origin issues when using the exteneral APIs please start Chrome in unsecure mode (Linux: google-chrome --disable-web-security)
+ or install this extension: https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi  
 
-
-```
+### IMPORTANT: Please note that the API tokens for the Google APIs will be not available in the next days.
+Please replace them using your owns. (see: src/application.js > $googleApiConfig.api.keys)

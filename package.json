@@ -1,7 +1,7 @@
 {
-  "name": "payment-app",
+  "name": "autoCompletion-app",
   "version": "0.0.1",
-  "description": "a payment app",
+  "description": "A search autoCompletion app",
   "main": "js/application.js",
   "scripts": {
     "postinstall": "bower install",
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/username/repository.git"
+    "url": "git@bitbucket.org:elvispapa/autocomplete-app.git"
   },
   "devDependencies": {
     "bower": "^1.7.7",
