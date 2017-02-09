@@ -4,7 +4,7 @@
 }
 
 #footer {
-    margin-top: 130px;
+    margin-top: 230px;
     padding: 10px;
 }
 
@@ -67,4 +67,7 @@
     margin: 0 auto;
     background-color: #fff;
     border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.space-top {
+    margin-top: 20px;
 }

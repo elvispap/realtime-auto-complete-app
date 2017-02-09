@@ -7,7 +7,9 @@
                 if(targetApi === "googleBooks") {
                     return GoogleBooksApi.search(query);
                 }
-                // TODO add more api providers
+                else if(targetApi === "testApi") {
+                    return TestApi.search(query);
+                }
             }
         };
     }]);

@@ -102,7 +102,8 @@ module.exports = function(grunt) {
             auth: {
                 src: [
                     'src/js/modules/auth/auth.js',
-                    'src/js/modules/auth/controllers/LoginController.js'
+                    'src/js/modules/auth/controllers/LoginController.js',
+                    'src/js/modules/auth/controllers/LogoutController.js'
                 ],
                 dest: 'build/module.auth.js'
             },

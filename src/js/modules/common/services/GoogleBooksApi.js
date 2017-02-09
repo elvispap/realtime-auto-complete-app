@@ -21,7 +21,6 @@
                         if(itemIsValid(item.volumeInfo.title)) {
                             return item.volumeInfo.title;
                         }
-                        //return item.volumeInfo.title;
                     });
                     deferred.resolve(responseItems);
                 });

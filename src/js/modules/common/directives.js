@@ -5,7 +5,15 @@
         return {
             restrict: "E",
             scope: {},
-            controller: function($scope) {},
+            controller: function($scope, AuthService) {
+                $scope.userIsAuth = AuthService.userIsAuthenticated() ? true : false;
+                $scope.$on("userLogOut", function(event) {
+                    $scope.userIsAuth = false;
+                });
+                $scope.$on("userLogin", function(event) {
+                    $scope.userIsAuth = true;
+                });
+            },
             templateUrl: "common/templates/header.htm"
         };
     });

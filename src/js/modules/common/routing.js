@@ -14,11 +14,17 @@
             templateUrl: 'auth/templates/login.htm',
             controller: 'LoginController'
         })
+        .state('app.logout', {
+            url: '/logout',
+            controller: 'LogoutController'
+        })
         .state('app.home', {
             url: '/home',
             templateUrl: 'common/templates/home.htm',
-            controller: 'HomeController'
+            controller: 'HomeController',
+            authenticate: true,
         });
         $urlRouterProvider.otherwise('/app/home');
+        
       });
 }());

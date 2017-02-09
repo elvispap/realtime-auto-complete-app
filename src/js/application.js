@@ -32,13 +32,26 @@
         var config = {
             api: {
                 maxResults: 10,
-                key: "AIzaSyATI2lGa3B3tmrpCmA54ZVUb-RIhZ-6Uhk"        // Get from config (on auth)
+                key: "AIzaSyATI2lGa3B3tmrpCmA54ZVUb-RIhZ-6Uhk" // Get from config (on auth)
             }
         };
         return config;
     });
 
-    app.controller('MainController', function($scope) {
-        // TODO put here business logic for use across all modules int the application
+    app.run(function($rootScope, $state, AuthService) {
+        $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+            if (toState.authenticate) {
+                if (!AuthService.userIsAuthenticated()) {
+                    // User isn’t authenticated
+                    $state.transitionTo("app.login");
+                    event.preventDefault();
+                }
+            }
+        });
     });
+
+    app.controller('MainController', function($scope, AuthService) {
+        // TODO put here code for usage accross all the views
+    });
+
 })();
