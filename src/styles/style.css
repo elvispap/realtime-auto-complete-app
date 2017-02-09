@@ -1,4 +1,4 @@
-#header{
+    #header {
     position: relative;
     margin-bottom: 70px;
 }
@@ -16,20 +16,23 @@
     cursor: pointer;
 }
 
-.dropdown-list-container {
-    border: 1px solid red;
+.autocomplete-container {
     max-width: 550px;
 }
 
-.dropdown-list{
+.suggestions-list {
     position: inherit;
     width: 100%;
     z-index: 2;
     display: inline-block;
     background: #fff;
-    border: 2px solid blue;
+    border-top: 2px solid grey;
+    border-radius: 3px;
+    max-height: 300px;
+    overflow-y: auto;
 }
-.dropdown-list-item {
+
+.suggestion-item {
     float: left;
     width: 100%;
     padding: 0 10px;
@@ -38,10 +41,30 @@
     -moz-box-sizing: border-box;
     border: solid 1px #dddddd;
     border-top: none;
+    padding: 3px;
 }
-.active {
-    color: red;
-}
-.inactive {
 
+.suggestion-item:hover {
+    background-color: #F5F5F5;
+    cursor: pointer;
+    color: black;
+}
+
+.active {
+    background-color: #F5F5F5;
+    color: black;
+}
+
+.inactive {}
+
+.wrapper {
+    margin-top: 80px;
+    margin-bottom: 80px;
+}
+.form-signin {
+    max-width: 380px;
+    padding: 15px 35px 45px;
+    margin: 0 auto;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }

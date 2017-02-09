@@ -93,9 +93,18 @@ module.exports = function(grunt) {
                     'bower_components/angular-utils-pagination/dirPagination.js',
                     'bower_components/angular-translate/angular-translate.js',
                     'bower_components/moment/moment.js',
-                    'bower_components/angular-moment/angular-moment.js'
+                    'bower_components/angular-moment/angular-moment.js',
+                    'bower_components/ng-twitter-api/dist/ng-twitter-api.min.js',
+                    'bower_components/jsSHA/src/sha1.js'
                 ],
                 dest: 'build/app.lib.js'
+            },
+            auth: {
+                src: [
+                    'src/js/modules/auth/auth.js',
+                    'src/js/modules/auth/controllers/LoginController.js'
+                ],
+                dest: 'build/module.auth.js'
             },
             common: {
                 src: [
@@ -111,6 +120,7 @@ module.exports = function(grunt) {
             },
             allModules: {
                 src: [
+                    'build/module.auth.js',
                     'build/module.common.js'
                 ],
                 dest: 'build/module.all.js'

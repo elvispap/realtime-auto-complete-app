@@ -4,8 +4,8 @@
     services.factory("Trie", function() {
 
         var Trie = function() {
-            this.words = 0;
-            this.prefixes = 0;
+            this.numOfWords = 0;
+            this.numOfPrefixes = 0;
             this.children = [];
         };
 
@@ -19,17 +19,15 @@
             if (!index) {
                 index = 0;
             }
-
             if (value.length === 0) {
                 return;
             }
-
             if (index === value.length) {
-                this.words++;
+                this.numOfWords++;
                 return;
             }
 
-            this.prefixes++;
+            this.numOfPrefixes++;
             var key = value[index];
             if (this.children[key] === undefined) {
                 this.children[key] = new Trie();
@@ -39,27 +37,25 @@
         };
 
         /**
-         * Remove a value form the trie
+         * Remove a node form the trie
          *
          * @param {String} value
          * @param {Number} index (optional)
          */
-        Trie.prototype.removeValue = function(value, index) {
+        Trie.prototype.removeNode = function(value, index) {
             if (!index) {
                 index = 0;
             }
-
             if (value.length === 0) {
                 return;
             }
-
             if (index === value.length) {
-                this.words--;
+                this.numOfWords--;
             } else {
-                this.prefixes--;
+                this.numOfPrefixes--;
                 var key = value[index];
                 var child = this.children[key];
-                child.removeValue(value, index + 1);
+                child.removeNode(value, index + 1);
             }
         };
 
@@ -68,17 +64,15 @@
          * @param {String} word
          * @param {Number} index (optional)
          */
-        Trie.prototype.wordCount = function() {
+        Trie.prototype.wordCount = function(word, index) {
             if (!index) {
                 index = 0;
             }
-
             if (value.length === 0) {
                 return 0;
             }
-
             if (index === value.length) {
-                return this.words;
+                return this.numOfWords;
             } else {
                 var key = value[index];
                 var child = this.children[key];
@@ -99,13 +93,11 @@
             if (!index) {
                 index = 0;
             }
-
             if (prefix.length === 0) {
                 return 0;
             }
-
             if (index === prefix.length) {
-                return this.prefixes;
+                return this.numOfPrefixes;
             } else {
                 var key = prefix[index];
                 var child = this.children[key];
@@ -126,7 +118,6 @@
             if (value.length === 0) {
                 return false;
             }
-
             return this.wordCount(value) > 0;
         };
 
@@ -141,7 +132,7 @@
             }
 
             var words = [];
-            if (this.words > 0) {
+            if (this.numOfWords > 0) {
                 words.push(prefix);
             }
 
@@ -149,21 +140,19 @@
                 var child = this.children[key];
                 words = words.concat(child.allChildWords(prefix + key));
             }
-
             return words;
         }
 
         /**
-         * Perform an autocomplete match
+         * Perform a search in the current trie
          *
          * @param {String} prefix
          * @param {Number} index
          */
-        Trie.prototype.autoComplete = function(prefix, index) {
+        Trie.prototype.search = function(prefix, index) {
             if (!index) {
                 index = 0;
             }
-
             if (prefix.length === 0) {
                 return [];
             }
@@ -176,7 +165,7 @@
                 if (index === prefix.length - 1) {
                     return child.allChildWords(prefix);
                 } else {
-                    return child.autoComplete(prefix, index + 1);
+                    return child.search(prefix, index + 1);
                 }
             }
         };

@@ -9,9 +9,15 @@
             url: '/app',
             templateUrl: 'common/templates/main.htm'
         })
+        .state('app.login', {
+            url: '/login',
+            templateUrl: 'auth/templates/login.htm',
+            controller: 'LoginController'
+        })
         .state('app.home', {
             url: '/home',
-            templateUrl: 'common/templates/home.htm'
+            templateUrl: 'common/templates/home.htm',
+            controller: 'HomeController'
         });
         $urlRouterProvider.otherwise('/app/home');
       });

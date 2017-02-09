@@ -1,0 +1,14 @@
+<span>
+    <button
+        ng-disabled="disabled"
+        type="button"
+        class="btn btn-default {{ngClass}}"
+        placeholder="{{placeholder}}"
+        ng-model="selectedItem",
+        data-html="1",
+        placement="bottom-left"
+        data-toggle="true"
+        bs-options="item.value as item.label for item in items"
+        bs-select>
+    </button>
+</span>

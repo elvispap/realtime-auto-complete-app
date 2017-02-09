@@ -1,37 +1,37 @@
-(function () {
+(function() {
     var directives = angular.module('app.common.directives', []);
 
-    directives.directive("myHeader", function ($app, $state) {
+    directives.directive("myHeader", function($app, $state) {
         return {
             restrict: "E",
             scope: {},
-            controller: function ($scope) {},
+            controller: function($scope) {},
             templateUrl: "common/templates/header.htm"
         };
     });
 
-    directives.directive("icon", function () {
+    directives.directive("icon", function() {
         return {
             restrict: "E",
             scope: {
                 type: "@",
                 size: "@?"
             },
-            controller: function ($scope) {
+            controller: function($scope) {
                 $scope.size = $scope.size || '';
             },
             template: "<i class='fa fa-{{type}} fa-{{size}}'></i>"
         };
     });
 
-    directives.directive("formatDate", function () {
+    directives.directive("formatDate", function() {
         return {
             restrict: "E",
             scope: {
                 date: "@",
                 format: "@?"
             },
-            controller: function ($scope) {
+            controller: function($scope) {
                 if ($scope.format) {
 
                 }
@@ -41,27 +41,7 @@
         };
     });
 
-    directives.directive("tooltip", function ($tooltip) {
-        return {
-            scope: {
-                text: '@tooltip',
-                options: '=?tooltipOptions',
-            },
-            link: function (scope, elem, attrs) {
-                var options = _.merge({
-                    animation: 'am-fade',
-                    placement: 'top',
-                    trigger: 'hover',
-                    title: scope.text,
-                    html: scope.htmlText,
-                    delay: 0,
-                }, scope.options);
-                $tooltip(elem, options);
-            }
-        };
-    });
-
-    directives.directive("itemSelector", function () {
+    directives.directive("itemSelector", function() {
         return {
             restrict: "E",
             replace: true,
@@ -73,149 +53,132 @@
                 onChange: "&",
                 placeholder: "@?"
             },
-            contoller: function ($scope) {
-                $scope.$watch("selectedItem", function (newValue, oldValue) {
+            contoller: function($scope) {
+                $scope.$watch("selectedItem", function(newValue, oldValue) {
                     if (newValue !== null && newValue !== undefined) {
-                        $scope.onChange({item: newValue});
+                        $scope.onChange({
+                            item: newValue
+                        });
                     }
                 }, true);
-                $scope.placeholder = $scope.placeholder || "Choose..";
+                $scope.placeholder = $scope.placeholder || "Choose...";
             },
             templateUrl: "common/templates/item-selector.htm"
         }
     });
 
-    directives.directive("autoCompletion", function (Trie) {
+    directives.directive("autoCompletion", function(Trie, GoogleBooksApi, SearchService) {
         return {
             restrict: "E",
             replace: true,
+            transclude: true,
             scope: {
+                targetApi: "@",
                 placeholder: "@?"
             },
-            controller: function ($scope) {
+            controller: function($scope) {
+                // console.log("disabled", $scope.isDisabled);
+                // console.log("targetApi", $scope.targetApi);
 
+                // In-memory suffix trie instance
                 var trie = new Trie();
 
-                var items = [];
-
+                // Define default keyboard key controls
                 const DOWN = 40;
                 const UP = 38;
                 const ENTER = 13;
 
-                var init = function () {
-
-                    items = ["elv", "elvi", "elvis", "elvis is the best", "java software", "java dev", "java developer", "elvis is the best of the best"];
-
-                    $scope.currentItemFromIndex;
-                    $scope.keyUpDownValue = -1;
-                    $scope.items = [];
+                var init = function() {
+                    $scope.keyboardKeyControls = {
+                        index: -1,
+                        suggestion: null
+                    };
+                    $scope.suggestions = [];
                     $scope.placeholder = $scope.placeholder || "Choose..";
                 };
 
-                var addItem = function (item) {
-                    $scope.items.push(item);
+                var clearSuggestions = function() {
+                    $scope.suggestions = [];
                 };
 
-                var itemExistInItems = function (item, items) {
-                    var exist = false;
-                    var itemsLength = items.length;
-                    for (var i = 0; i < itemsLength; i++) {
-                        if (items[i] === item) {
-                            exist = true;
-                            break;
-                        }
-                    }
-                    return exist;
-                }
-
-                var clearItems = function () {
-                    $scope.items = [];
+                var restoreKeyboardKeyControls = function() {
+                    $scope.keyboardKeyControls.index = -1;
+                    $scope.keyboardKeyControls.suggestion = null;
                 };
 
-                var clearIndexData = function () {
-                    // restore default values
-                    $scope.keyUpDownValue = -1;
-                    $scope.currentItemFromIndex = null;
-                };
+                // TODO add delay....
+                $scope.query = function($query) {
+                    //console.log("query for", $query);
 
-
-
-                $scope.query = function (q) {
-                    //console.log("query for", q);
-
-                    if (q === "") {
-                        clearItems();
-                        clearIndexData();
+                    if ($query === "") {
+                        clearSuggestions();
+                        restoreKeyboardKeyControls();
                         return;
                     }
 
                     // STEP 1. Fetch results from API (Client)
+                    SearchService.search($query, $scope.targetApi).then(function(results) {
 
-                    // STEP 2. Create trie from results (Server)
-                    items.forEach(function (value) {
-                        trie.addNode(value);
+                        // STEP 2. Create trie from results (Server)
+                        results.forEach(function(item) {
+                            trie.addNode(item.toLowerCase());
+                        });
+
+                        // STEP 3. Find suggestions from the trie (Client)
+                        var suggestionsFromTrie = trie.search($query.toLowerCase());
+
+                        $scope.suggestions = suggestionsFromTrie;
                     });
-
-                    // STEP 3. Find suggestions from the trie (Client)
-                    var results = trie.autoComplete(q.toLowerCase());
-                    console.log("got results", results);
-
-                    $scope.items = results;
-
                 };
 
-                $scope.onKeyPressed = function ($event) {
+                $scope.onKeyPressed = function($event) {
 
                     var key = $event.keyCode;
 
-                    // Case 1. Disable event when are no items to select
-                    if (!$scope.items.length) {
-                        clearIndexData();
+                    // Case 1. Disable event when are no suggestions to select
+                    if (!$scope.suggestions.length) {
+                        restoreKeyboardKeyControls();
                         return;
                     }
 
-                    // Case 2. when pointer has reach the last item, disable the event (there are no more items to select)
-                    if (key === DOWN && $scope.keyUpDownValue === $scope.items.length - 1) {
+                    // Case 2. when pointer has reach the last item, disable the event (there are no more suggestions to select)
+                    if (key === DOWN && $scope.keyboardKeyControls.index === $scope.suggestions.length - 1) {
                         return;
                     }
 
-                    // Case 3. When pointer has reach the first item, disable the event (there are no more items to select)
-                    if (key === UP && $scope.keyUpDownValue === 0) {
+                    // Case 3. When pointer has reach the first item, disable the event (there are no more suggestions to select)
+                    if (key === UP && $scope.keyboardKeyControls.index === 0) {
                         return;
                     }
 
-                    // Case 4. There are still items to select
-                    if (key === DOWN) {    // down
-                        $scope.keyUpDownValue++;
-                    } else if (key === UP) {   // up
-                        $scope.keyUpDownValue--;
+                    // Case 4. There are still suggestions to select
+                    if (key === DOWN) { // down
+                        $scope.keyboardKeyControls.index++;
+                    } else if (key === UP) { // up
+                        $scope.keyboardKeyControls.index--;
                     }
 
                     // Case 5. Enter key was pressed to select current item
-
-                    if (key === ENTER && $scope.currentItemFromIndex) {
-                        $scope.selectItem($scope.currentItemFromIndex);
+                    if (key === ENTER && $scope.keyboardKeyControls.suggestion) {
+                        $scope.selectSuggestion($scope.keyboardKeyControls.suggestion);
                     }
 
-
-                    // Finally, set current active item
-                    if ($scope.keyUpDownValue !== -1) {
-                        var itemFromIndex = $scope.items[$scope.keyUpDownValue];
-                        $scope.currentItemFromIndex = itemFromIndex;
+                    // Finally, set current active suggestion
+                    if ($scope.keyboardKeyControls.index !== -1) {
+                        $scope.keyboardKeyControls.suggestion = $scope.suggestions[$scope.keyboardKeyControls.index];
                     }
-
                 };
 
-                $scope.selectItem = function (item) {
-                    $scope.$query = item;
-                    clearItems();
+                $scope.selectSuggestion = function(suggestion) {
+                    $scope.$query = suggestion;
+                    clearSuggestions();
                 };
 
-                $scope.getListItemClass = function (index) {
-                    if (typeof $scope.currentItemFromIndex !== undefined && $scope.items[index] === $scope.currentItemFromIndex) {
-                        return 'active';
-                    }
-                    return 'inactive';
+                $scope.getSuggestionItemClass = function(index) {
+                    var suggestionIsActive = function() {
+                        return typeof $scope.keyboardKeyControls.suggestion !== undefined && $scope.suggestions[index] === $scope.keyboardKeyControls.suggestion;
+                    };
+                    return suggestionIsActive() ? 'active' : 'inactive';
                 };
 
                 init();
@@ -224,11 +187,11 @@
         }
     });
 
-    directives.directive("myFooter", function () {
+    directives.directive("myFooter", function() {
         return {
             restrict: "E",
             scope: {},
-            controller: function ($scope) {
+            controller: function($scope) {
                 $scope.currentDate = new Date();
             },
             templateUrl: "common/templates/footer.htm"

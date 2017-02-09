@@ -1,26 +1,23 @@
-<div class="">
+<div>
+    <div class="autocomplete-container">
+        <input
+           ng-disabled="{{isDisabled}}"
+           ng-change="query($query)"
+           ng-model="$query"
+           ng-keydown="onKeyPressed($event)"
+           placeholder="{{placeholder}}"
+           class="form-control"
+           type="text">
 
-    ...ITEMS: {{items | json}}
-
-        <div class="dropdown-list-container">
-            <input ng-change="query($query)"
-               ng-model="$query"
-               ng-keydown="onKeyPressed($event)"
-               placeholder="{{placeholder}}"
-               class="form-control"
-               type="text"
-               name=""
-               value="">
-
-            <div class="dropdown-list" ng-if="items.length">
-                <div ng-click="selectItem(item)"
-                     class="dropdown-list-item"
-                     ng-class="getListItemClass($index)"}
-                     ng-repeat="item in items">
-                    <span>
-                        {{item}}
-                    </span>
-                </div>
+        <div class="suggestions-list" ng-if="suggestions.length">
+            <div ng-click="selectSuggestion(suggestion)"
+                 class="suggestion-item"
+                 ng-class="getSuggestionItemClass($index)"}
+                 ng-repeat="suggestion in suggestions">
+                <span>
+                    {{suggestion}}
+                </span>
             </div>
         </div>
+    </div>
 </div>

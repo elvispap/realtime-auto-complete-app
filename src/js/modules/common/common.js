@@ -3,7 +3,7 @@
 
     angular.module('app.common.routing', ['ui.router', 'ngRoute']);
     angular.module('app.common.directives', []);
-    angular.module('app.common.services', []);
+    angular.module('app.common.services', ['ngTwitter']);
     angular.module('app.common.filters', []);
     angular.module('app.common.controllers', []);
 
