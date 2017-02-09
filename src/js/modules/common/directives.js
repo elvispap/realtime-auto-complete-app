@@ -85,24 +85,24 @@
                         return;
                     }
 
-                    // Case 2. when pointer has reach the last item, disable the event (there are no more suggestions to select)
+                    // Case 2. When pointer has reached the last suggestion from the list, disable the event (there are no suggestions to select)
                     if (key === DOWN && $scope.keyboardKeyControls.index === $scope.suggestions.length - 1) {
                         return;
                     }
 
-                    // Case 3. When pointer has reach the first item, disable the event (there are no more suggestions to select)
+                    // Case 3. When pointer has reached the first suggestion, disable the event (there are no suggestions to select)
                     if (key === UP && $scope.keyboardKeyControls.index === 0) {
                         return;
                     }
 
-                    // Case 4. There are still suggestions to select
+                    // Case 4. There are still suggestions to navigate
                     if (key === DOWN) { // down
                         $scope.keyboardKeyControls.index++;
                     } else if (key === UP) { // up
                         $scope.keyboardKeyControls.index--;
                     }
 
-                    // Case 5. Enter key was pressed to select current item
+                    // Case 5. 'Enter' key was pressed to select current item
                     if (key === ENTER && $scope.keyboardKeyControls.suggestion) {
                         $scope.selectSuggestion($scope.keyboardKeyControls.suggestion);
                     }

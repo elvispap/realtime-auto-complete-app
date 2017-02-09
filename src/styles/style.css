@@ -1,10 +1,10 @@
+/************ Common styles **************/
 #header {
     position: relative;
     margin-bottom: 70px;
 }
 
 #footer {
-    margin-top: 230px;
     padding: 10px;
 }
 
@@ -15,6 +15,12 @@
 .link:hover {
     cursor: pointer;
 }
+
+.space-top {
+    margin-top: 20px;
+}
+
+/************ Autocomplete directive **************/
 
 .autocomplete-container {
     max-width: 550px;
@@ -35,7 +41,6 @@
     max-height: 300px;
     overflow-y: auto;
 }
-
 .suggestion-item {
     float: left;
     width: 100%;
@@ -61,6 +66,7 @@
 
 .inactive {}
 
+/************ Login page **************/
 .wrapper {
     margin-top: 80px;
     margin-bottom: 80px;
@@ -72,8 +78,4 @@
     margin: 0 auto;
     background-color: #fff;
     border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.space-top {
-    margin-top: 20px;
 }
