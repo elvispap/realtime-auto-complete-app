@@ -1,6 +1,6 @@
 (function() {
 
-    // define 3rd party dependencies
+    // Define 3rd party dependencies
     angular.module('app.library', [
         'ngRoute',
         'ui.router',
@@ -10,6 +10,7 @@
         'restangular'
     ]);
 
+    // Define app module
     var app = angular.module('app', [
         'app.library',
         'app.api',
@@ -18,26 +19,22 @@
         'app.templates'
     ]);
 
-    app.factory('$app', function appFactory() {
-        var app = {
-            routes: {
-                login: "/",
-                home: "home"
-            }
-        };
-        return app;
-    });
-
+    // Google api config
     app.factory('$googleApiConfig', function appFactory() {
         var config = {
             api: {
-                maxResults: 10,
-                key: "AIzaSyATI2lGa3B3tmrpCmA54ZVUb-RIhZ-6Uhk" // Get from config (on auth)
+                maxResults: 20,
+                keys: {
+                    // TODO get from sever
+                    books: "AIzaSyC1G1dCl9TqfMfQPLIBqzzwE91UmneEYXo",
+                    maps: "AIzaSyDLlrkFKpPFUKKAJ43wA3f1DFqrmTYS7P0"
+                }
             }
         };
         return config;
     });
 
+    // For route authentication
     app.run(function($rootScope, $state, AuthService) {
         $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
             if (toState.authenticate) {

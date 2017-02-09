@@ -3,22 +3,34 @@
         <div class="panel-heading">
             Search here
         </div>
-        <div class="panel-body">
+        <div class="panel-body home-inputs-container">
+
             <div class="col-md-6">
                 <div class="autocomplete-container">
-                    <label>Search Google Books:</label>
-                    <auto-completion
-                        target-api="googleBooks"
-                        placeholder="Start quering...">
+                    <label>
+                        <icon class="globe"></icon>
+                        <span class="space-left">Search Places:</span>
+                    </label>
+                    <auto-completion target-api="googleMaps" placeholder="Start quering...">
+                    </auto-completion>
+                </div>
+                <div class="space-top autocomplete-container">
+                    <label>
+                        <icon class="database"></icon>
+                        <span class="space-left">JVM topics:</span>
+                    </label>
+                    <auto-completion target-api="testApi" placeholder="Start quering...">
                     </auto-completion>
                 </div>
             </div>
 
             <div class="col-md-6">
                 <div class="autocomplete-container">
-                    <auto-completion
-                        target-api="googleBooks"
-                        placeholder="Start quering...">
+                    <label>
+                        <icon class="book"></icon>
+                        <span class="space-left">Search Books:</span>
+                    </label>
+                    <auto-completion target-api="googleBooks" placeholder="Start quering...">
                     </auto-completion>
                 </div>
             </div>

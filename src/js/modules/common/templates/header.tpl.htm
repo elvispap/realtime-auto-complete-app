@@ -10,7 +10,7 @@
                 <span class="icon-bar"></span>
             </button>
 
-            <a class="navbar-brand" ui-sref="app.accounts.list"> Logo </a>
+            <a class="link navbar-brand" ui-sref="app.home"> Logo </a>
 
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -20,13 +20,12 @@
             </div>
             <div ng-If="!auth">
                 <ul class="nav navbar-nav navbar-right">
-                    <li ng-if="!userIsAuth">
-                        <a ui-sref="app.login">
-                            <span class="space-left"> Login </span> </a>
-                    </li>
                     <li ng-if="userIsAuth">
                         <a ui-sref="app.logout">
-                            <span class="space-left"> Logout </span>
+                            <span class="space-left">
+                                <icon class="sign-out"> </icon>
+                                <span class="space-left"> Logout </span>
+                             </span>
                         </a>
                     </li>
                 </ul>

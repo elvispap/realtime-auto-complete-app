@@ -1,81 +1,7 @@
 (function() {
     var directives = angular.module('app.common.directives', []);
 
-    directives.directive("myHeader", function($app, $state) {
-        return {
-            restrict: "E",
-            scope: {},
-            controller: function($scope, AuthService) {
-                $scope.userIsAuth = AuthService.userIsAuthenticated() ? true : false;
-                $scope.$on("userLogOut", function(event) {
-                    $scope.userIsAuth = false;
-                });
-                $scope.$on("userLogin", function(event) {
-                    $scope.userIsAuth = true;
-                });
-            },
-            templateUrl: "common/templates/header.htm"
-        };
-    });
-
-    directives.directive("icon", function() {
-        return {
-            restrict: "E",
-            scope: {
-                type: "@",
-                size: "@?"
-            },
-            controller: function($scope) {
-                $scope.size = $scope.size || '';
-            },
-            template: "<i class='fa fa-{{type}} fa-{{size}}'></i>"
-        };
-    });
-
-    directives.directive("formatDate", function() {
-        return {
-            restrict: "E",
-            scope: {
-                date: "@",
-                format: "@?"
-            },
-            controller: function($scope) {
-                if ($scope.format) {
-
-                }
-                $scope.date = new Date($scope.date);
-            },
-            template: "...<span> {{timestamp | date: 'yyyy-MM-dd'}} </span>"
-        };
-    });
-
-    directives.directive("itemSelector", function() {
-        return {
-            restrict: "E",
-            replace: true,
-            scope: {
-                ngClass: "@?class",
-                selectedItem: "=ngModel",
-                items: "=items",
-                disabled: "=?",
-                onChange: "&",
-                placeholder: "@?"
-            },
-            contoller: function($scope) {
-                $scope.$watch("selectedItem", function(newValue, oldValue) {
-                    if (newValue !== null && newValue !== undefined) {
-                        $scope.onChange({
-                            item: newValue
-                        });
-                    }
-                }, true);
-                $scope.placeholder = $scope.placeholder || "Choose...";
-            },
-            templateUrl: "common/templates/item-selector.htm"
-        }
-    });
-
-    directives.directive("autoCompletion", function(Trie, GoogleBooksApi, SearchService) {
+    directives.directive("autoCompletion", function($timeout, Trie, SearchService) {
         return {
             restrict: "E",
             replace: true,
@@ -85,24 +11,27 @@
                 placeholder: "@?"
             },
             controller: function($scope) {
-                // console.log("disabled", $scope.isDisabled);
-                // console.log("targetApi", $scope.targetApi);
 
-                // In-memory suffix trie instance
-                var trie = new Trie();
+                // The in-memory suffix trie instance used by our autocomplete algorithm
+                var trie;
 
-                // Define default keyboard key controls
+                // Keyboard arrow key controls
                 const DOWN = 40;
                 const UP = 38;
                 const ENTER = 13;
 
                 var init = function() {
+                    // The current index and suggestion of the displayed suggestsions when user users
+                    // the keyboard arrow controls to navigate though them
                     $scope.keyboardKeyControls = {
                         index: -1,
                         suggestion: null
                     };
+
+                    // The current found suggestions displayed in the UI
                     $scope.suggestions = [];
-                    $scope.placeholder = $scope.placeholder || "Choose..";
+
+                    trie = new Trie();
                 };
 
                 var clearSuggestions = function() {
@@ -114,9 +43,14 @@
                     $scope.keyboardKeyControls.suggestion = null;
                 };
 
-                // TODO add delay....
+                // Timeout promise variable to prevent multiple requsets for each character change in the autocomplete input
+                // For example when user types VERY QUICKLT the word "machine" we want to fire only request with the value
+                // "machine" and not 5 rquest for each of the subtrings: "m", "mac", "mach", "machi", "machin"
+                var queryPromise;
+
                 $scope.query = function($query) {
-                    //console.log("query for", $query);
+
+                    $timeout.cancel(queryPromise);
 
                     if ($query === "") {
                         clearSuggestions();
@@ -124,23 +58,25 @@
                         return;
                     }
 
-                    // STEP 1. Fetch results from API (Client)
-                    SearchService.search($query, $scope.targetApi).then(function(results) {
+                    queryPromise = $timeout(function() {
 
-                        // STEP 2. Create trie from results (Server)
-                        results.forEach(function(item) {
-                            trie.addNode(item.toLowerCase());
+                        // STEP 1. Fetch results from Search service
+                        SearchService.search($query, $scope.targetApi).then(function(results) {
+
+                            // STEP 2. Create/update trie from results
+                            results.forEach(function(item) {
+                                trie.addNode(item.toLowerCase());
+                            });
+
+                            // STEP 3. Get suggestions from the trie
+                            var foundSuggestions = trie.search($query.toLowerCase());
+                            console.log("query: " + $query + " | found suggestions: ", foundSuggestions);
+                            $scope.suggestions = foundSuggestions;
                         });
-
-                        // STEP 3. Find suggestions from the trie (Client)
-                        var suggestionsFromTrie = trie.search($query.toLowerCase());
-
-                        $scope.suggestions = suggestionsFromTrie;
-                    });
+                    }, 500);
                 };
 
-                $scope.onKeyPressed = function($event) {
-
+                $scope.onKeyboardBtnPressed = function($event) {
                     var key = $event.keyCode;
 
                     // Case 1. Disable event when are no suggestions to select
@@ -193,6 +129,37 @@
             },
             templateUrl: "common/templates/auto-completion.htm"
         }
+    });
+
+    directives.directive("myHeader", function($state) {
+        return {
+            restrict: "E",
+            scope: {},
+            controller: function($scope, AuthService) {
+                $scope.userIsAuth = AuthService.userIsAuthenticated();
+                $scope.$on("userLogOut", function(event) {
+                    $scope.userIsAuth = false;
+                });
+                $scope.$on("userLogin", function(event) {
+                    $scope.userIsAuth = true;
+                });
+            },
+            templateUrl: "common/templates/header.htm"
+        };
+    });
+
+    directives.directive("icon", function() {
+        return {
+            restrict: "E",
+            scope: {
+                class: "@",
+                size: "@?"
+            },
+            controller: function($scope) {
+                $scope.size = $scope.size || '';
+            },
+            template: "<i class='fa fa-{{class}} fa-{{size}}'></i>"
+        };
     });
 
     directives.directive("myFooter", function() {

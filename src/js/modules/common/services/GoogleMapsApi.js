@@ -1,25 +1,26 @@
 (function() {
     var services = angular.module('app.common.services');
 
-    services.factory("GoogleBooksApi", ['$http', '$q', '$googleApiConfig', function($http, $q, $googleApiConfig) {
+    services.factory("GoogleMapsApi", ['$http', '$q', '$googleApiConfig', function($http, $q, $googleApiConfig) {
         return {
             search: function(query) {
                 var deferred = $q.defer();
                 $http({
                     method: "get",
-                    url: "https://www.googleapis.com/books/v1/volumes",
+                    url: "https://maps.googleapis.com/maps/api/place/autocomplete/json",
                     params: {
-                        q: query,
+                        input: query,
                         maxResults: $googleApiConfig.api.maxResults,
-                        key: $googleApiConfig.api.keys.books
+                        types: 'geocode',
+                        key: $googleApiConfig.api.keys.maps
                     }
                 }).then(function(response) {
                     var itemIsValid = function(item) {
                         return (item && typeof item !== "undefined");
                     };
-                    var responseItems = response.data.items.map(function(item) {
-                        if(itemIsValid(item.volumeInfo.title)) {
-                            return item.volumeInfo.title;
+                    var responseItems = response.data.predictions.map(function(item) {
+                        if (itemIsValid(item.description)) {
+                            return item.description;
                         }
                     });
                     deferred.resolve(responseItems);
