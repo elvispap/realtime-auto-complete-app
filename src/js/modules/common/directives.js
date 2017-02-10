@@ -55,7 +55,7 @@
                 // "machine" and not 5 rquest for each of the subtrings: "m", "mac", "mach", "machi", "machin"
                 var queryPromise;
 
-                $scope.query = function($query) {
+                $scope.onQuery = function($query) {
 
                     $timeout.cancel(queryPromise);
 
@@ -65,7 +65,9 @@
                         return;
                     }
 
+                    // Get query start time
                     var startTime = performance.now();
+
                     queryPromise = $timeout(function() {
 
                         // STEP 1. Fetch results from Search service
@@ -78,6 +80,8 @@
 
                             // STEP 3. Get suggestions from the trie
                             var foundSuggestions = trie.search($query.toLowerCase());
+
+                            // Get query end time
                             var endTime = performance.now();
 
                             console.log("query: " + $query + " | found suggestions: ", foundSuggestions);

@@ -6,7 +6,7 @@
         </small>
         <input
            ng-disabled="{{isDisabled}}"
-           ng-change="query($query)"
+           ng-change="onQuery($query)"
            ng-model="$query"
            ng-keydown="onKeyboardBtnPressed($event)"
            placeholder="{{placeholder}}"
