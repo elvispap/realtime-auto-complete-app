@@ -3,7 +3,7 @@
         <small class="pull-right">
             <span> {{suggestions.length}} results </span>
             <span ng-if="queryResponseTime">({{queryResponseTime}} seconds) </span>
-            <span ng-click="clearSuggestions()" class="btn btn-primary btn-xs">
+            <span ng-if="suggestions.length || $query" ng-click="clearSuggestions()" class="btn btn-primary btn-xs">
                 <icon class="trash"> </icon>
             </span>
         </small>
@@ -19,7 +19,7 @@
                class="form-control"
                type="text"/>
             <span class="link input-group-addon">
-                <button class="btn btn-default" ng-disabled="!$query" ng-click="onQuerySubmit($query)" >
+                <button class="btn btn-success" ng-disabled="!$query" ng-click="onQuerySubmit($query)" >
                     <i class="fa fa-search"></i>
                 </button>
             </span>

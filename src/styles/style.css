@@ -24,10 +24,9 @@
 
 .autocomplete-container {
     max-width: 550px;
-    border: 1px solid rgb(248, 248, 248);
+    border: 2px solid #f8f8f8;
     padding: 5px;
     border-radius: 3px;
-    border-top: 4px solid #337ab7;
 }
 .search-container {
     width: 100%;
