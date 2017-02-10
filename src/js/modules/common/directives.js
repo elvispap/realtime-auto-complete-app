@@ -75,7 +75,7 @@
 
                             // STEP 2. Create/update trie from results
                             results.forEach(function(item) {
-                                trie.addNode(item.toLowerCase());
+                                trie.addPrefix(item.toLowerCase());
                             });
 
                             // STEP 3. Get suggestions from the trie

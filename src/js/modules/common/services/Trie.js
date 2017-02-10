@@ -10,12 +10,12 @@
         };
 
         /**
-         * Add a new node to the trie
+         * Add a new prefix to the trie
          *
          * @param {String} value
          * @param {Number} index (optional)
          */
-        Trie.prototype.addNode = function(value, index) {
+        Trie.prototype.addPrefix = function(value, index) {
             if (!index) {
                 index = 0;
             }
@@ -33,7 +33,7 @@
                 this.children[key] = new Trie();
             }
             var child = this.children[key];
-            child.addNode(value, index + 1);
+            child.addPrefix(value, index + 1);
         };
 
         /**
