@@ -89,7 +89,7 @@
                             $scope.queryResponseTime = calculateResponseTime(endTime, startTime);
                             $scope.suggestions = foundSuggestions;
                         });
-                    }, 500);
+                    }, 200);
                 };
 
                 $scope.onKeyboardBtnPressed = function($event) {
