@@ -22,7 +22,7 @@ A real time input auto-completion application written in AngularJS.
 ##### run the application
 
 - grunt; grunt watch
-- cd /dist
+- cd dist
 - http-server -p ${port} // default port is 8080
 
 
