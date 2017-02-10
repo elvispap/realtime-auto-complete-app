@@ -36,11 +36,18 @@
 
                 var clearSuggestions = function() {
                     $scope.suggestions = [];
+                    $scope.queryResponseTime = null;
                 };
 
                 var restoreKeyboardKeyControls = function() {
                     $scope.keyboardKeyControls.index = -1;
                     $scope.keyboardKeyControls.suggestion = null;
+                };
+
+                var calculateResponseTime = function(endTime, startTime) {
+                    var unroundedTime = (endTime - startTime) / 1000;
+                    var roundedTime = Math.round(unroundedTime * 100) / 100;
+                    return roundedTime;
                 };
 
                 // Timeout promise variable to prevent multiple requsets for each character change in the autocomplete input
@@ -58,6 +65,7 @@
                         return;
                     }
 
+                    var startTime = performance.now();
                     queryPromise = $timeout(function() {
 
                         // STEP 1. Fetch results from Search service
@@ -70,7 +78,11 @@
 
                             // STEP 3. Get suggestions from the trie
                             var foundSuggestions = trie.search($query.toLowerCase());
+                            var endTime = performance.now();
+
                             console.log("query: " + $query + " | found suggestions: ", foundSuggestions);
+
+                            $scope.queryResponseTime = calculateResponseTime(endTime, startTime);
                             $scope.suggestions = foundSuggestions;
                         });
                     }, 500);

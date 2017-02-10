@@ -15,20 +15,28 @@
                         key: $googleApiConfig.api.keys.maps
                     }
                 }).then(function(response) {
-                    var itemIsValid = function(item) {
+
+                    var isValid = function(item) {
                         return (item && typeof item !== "undefined");
                     };
-                    var responseItems = response.data.predictions.map(function(item) {
-                        if (itemIsValid(item.description)) {
-                            return item.description;
-                        }
-                    });
-                    deferred.resolve(responseItems);
-                });
 
+                    // Check if the response items are valid
+                    var responseItems = response.data.predictions;
+                    if(isValid(responseItems)) {
+                        var results = responseItems.map(function(item) {
+                            if(isValid(item.description)) {
+                                return item.description;
+                            }
+                        });
+                        deferred.resolve(results);
+                    }
+                    else {
+                        // No results found
+                        deferred.resolve([]);
+                    }
+                });
                 return deferred.promise;
             }
         };
     }]);
-
 }());

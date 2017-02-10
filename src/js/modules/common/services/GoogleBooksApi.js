@@ -14,20 +14,28 @@
                         key: $googleApiConfig.api.keys.books
                     }
                 }).then(function(response) {
-                    var itemIsValid = function(item) {
+
+                    var isValid = function(item) {
                         return (item && typeof item !== "undefined");
                     };
-                    var responseItems = response.data.items.map(function(item) {
-                        if(itemIsValid(item.volumeInfo.title)) {
-                            return item.volumeInfo.title;
-                        }
-                    });
-                    deferred.resolve(responseItems);
-                });
 
+                    // Check if the response items are valid
+                    var responseItems = response.data.items;
+                    if(responseItems) {
+                        var results = responseItems.map(function(item) {
+                            if(isValid(item.volumeInfo.title)) {
+                                return item.volumeInfo.title;
+                            }
+                        });
+                        deferred.resolve(results);
+                    }
+                    else {
+                        // No results found
+                        deferred.resolve([]);
+                    }
+                });
                 return deferred.promise;
             }
         };
     }]);
-
 }());

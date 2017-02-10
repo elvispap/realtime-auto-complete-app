@@ -1,5 +1,9 @@
 <div>
     <div class="autocomplete-container">
+        <small class="pull-right">
+            <span> {{suggestions.length}} results </span>
+            <span ng-if="queryResponseTime">({{queryResponseTime}} seconds) </span>
+        </small>
         <input
            ng-disabled="{{isDisabled}}"
            ng-change="query($query)"
@@ -8,7 +12,6 @@
            placeholder="{{placeholder}}"
            class="form-control"
            type="text">
-
         <div class="suggestions-list" ng-if="suggestions.length">
             <div ng-click="selectSuggestion(suggestion)"
                  class="suggestion-item"
