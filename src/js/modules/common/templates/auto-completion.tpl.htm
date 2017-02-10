@@ -1,17 +1,29 @@
 <div>
-    <div class="autocomplete-container">
+    <div class="info-container">
         <small class="pull-right">
             <span> {{suggestions.length}} results </span>
             <span ng-if="queryResponseTime">({{queryResponseTime}} seconds) </span>
+            <span ng-click="clearSuggestions()" class="btn btn-primary btn-xs">
+                <icon class="trash"> </icon>
+            </span>
         </small>
-        <input
-           ng-disabled="{{isDisabled}}"
-           ng-change="onQuery($query)"
-           ng-model="$query"
-           ng-keydown="onKeyboardBtnPressed($event)"
-           placeholder="{{placeholder}}"
-           class="form-control"
-           type="text">
+    </div>
+    <div>
+        <div class="search-container input-group">
+            <input
+               ng-disabled="{{isDisabled}}"
+               ng-change="onQuery($query)"
+               ng-model="$query"
+               ng-keydown="onKeyboardBtnPressed($event)"
+               placeholder="{{placeholder}}"
+               class="form-control"
+               type="text"/>
+            <span class="link input-group-addon">
+                <button class="btn btn-default" ng-disabled="!$query" ng-click="onQuerySubmit($query)" >
+                    <i class="fa fa-search"></i>
+                </button>
+            </span>
+        </div>
         <div class="suggestions-list" ng-if="suggestions.length">
             <div ng-click="selectSuggestion(suggestion)"
                  class="suggestion-item"

@@ -24,8 +24,14 @@
 
 .autocomplete-container {
     max-width: 550px;
+    border: 1px solid rgb(248, 248, 248);
+    padding: 5px;
+    border-radius: 3px;
+    border-top: 4px solid #337ab7;
 }
-
+.search-container {
+    width: 100%;
+}
 .home-inputs-container {
     min-height: 200px;
 }
@@ -65,6 +71,10 @@
 }
 
 .inactive {}
+
+.input-group-addon {
+    padding: 0px !important;
+}
 
 /************ Login page **************/
 .form-signin {

@@ -50,6 +50,10 @@
                     return roundedTime;
                 };
 
+                var isValid = function(item) {
+                    return (item && typeof item !== "undefined");
+                };
+
                 // Timeout promise variable to prevent multiple requsets for each character change in the autocomplete input
                 // For example when user types VERY QUICKLT the word "machine" we want to fire only request with the value
                 // "machine" and not 5 rquest for each of the subtrings: "m", "mac", "mach", "machi", "machin"
@@ -125,8 +129,16 @@
 
                     // Finally, set current active suggestion
                     if ($scope.keyboardKeyControls.index !== -1) {
-                        $scope.keyboardKeyControls.suggestion = $scope.suggestions[$scope.keyboardKeyControls.index];
+                        var currentActiveSuggestion = $scope.suggestions[$scope.keyboardKeyControls.index];
+                        if(isValid(currentActiveSuggestion)) {
+                            $scope.keyboardKeyControls.suggestion = $scope.suggestions[$scope.keyboardKeyControls.index];
+                            $scope.$query = $scope.keyboardKeyControls.suggestion;
+                        }
                     }
+                };
+
+                $scope.onQuerySubmit = function() {
+                    console.log("Finally submit query: " + $scope.$query);
                 };
 
                 $scope.selectSuggestion = function(suggestion) {
@@ -139,6 +151,11 @@
                         return typeof $scope.keyboardKeyControls.suggestion !== undefined && $scope.suggestions[index] === $scope.keyboardKeyControls.suggestion;
                     };
                     return suggestionIsActive() ? 'active' : 'inactive';
+                };
+
+                $scope.clearSuggestions = function() {
+                    $scope.$query = null;
+                    clearSuggestions();
                 };
 
                 init();
